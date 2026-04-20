@@ -3,6 +3,7 @@ package io.github.s4gh.projecteditorrunactions;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
@@ -20,10 +21,18 @@ import org.openide.util.actions.Presenter;
 import org.openide.util.lookup.Lookups;
 
 /**
- * Shared base for editor-toolbar actions that delegate a single-file command
- * (run, debug, ...) to the project's {@link ActionProvider}. The current
- * editor's {@link DataObject} is injected by NetBeans when the lazy action is
- * materialized for the {@code Editors/Toolbars/Default} toolbar.
+ * Shared base for editor-toolbar actions that act on the file currently shown
+ * in the editor. The current editor's {@link DataObject} is injected by
+ * NetBeans when the lazy action is materialized for the
+ * {@code Editors/Toolbars/Default} toolbar.
+ *
+ * <p>The default implementation delegates to the owning project's
+ * {@link ActionProvider} using a command string (e.g.
+ * {@link ActionProvider#COMMAND_RUN_SINGLE}). Subclasses that do not dispatch
+ * through an {@code ActionProvider} command — for instance, ones that delegate
+ * to another registered {@link Action} — pass {@code command = null} and
+ * override {@link #isCommandEnabled()} and
+ * {@link #actionPerformed(ActionEvent)}.
  */
 abstract class AbstractFileCommandAction extends AbstractAction
         implements ContextAwareAction, Presenter.Toolbar {
@@ -33,15 +42,27 @@ abstract class AbstractFileCommandAction extends AbstractAction
 
     protected AbstractFileCommandAction(DataObject dobj, String command,
                                         String displayName, String iconResource) {
+        this(dobj, command, displayName,
+             ImageUtilities.loadImageIcon(iconResource, false));
+    }
+
+    protected AbstractFileCommandAction(DataObject dobj, String command,
+                                        String displayName, Icon icon) {
         super(displayName);
         this.dobj = dobj;
         this.command = command;
-        putValue(Action.SMALL_ICON, ImageUtilities.loadImageIcon(iconResource, false));
+        if (icon != null) {
+            putValue(Action.SMALL_ICON, icon);
+        }
         putValue("hideActionText", Boolean.TRUE);
         setEnabled(isCommandEnabled());
     }
 
-    private ActionProvider actionProvider() {
+    protected final DataObject dataObject() {
+        return dobj;
+    }
+
+    protected final ActionProvider actionProvider() {
         if (dobj == null) {
             return null;
         }
@@ -50,7 +71,10 @@ abstract class AbstractFileCommandAction extends AbstractAction
         return prj == null ? null : prj.getLookup().lookup(ActionProvider.class);
     }
 
-    private boolean isCommandEnabled() {
+    protected boolean isCommandEnabled() {
+        if (command == null) {
+            return false;
+        }
         ActionProvider ap = actionProvider();
         if (ap == null) {
             return false;
@@ -64,6 +88,9 @@ abstract class AbstractFileCommandAction extends AbstractAction
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (command == null) {
+            return;
+        }
         ActionProvider ap = actionProvider();
         if (ap == null) {
             return;
