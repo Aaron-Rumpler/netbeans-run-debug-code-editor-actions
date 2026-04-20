@@ -168,13 +168,13 @@
             <version>${netbeans.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.netbeans.api</groupId>
+            <groupId>org.netbeans.modules</groupId>
             <artifactId>org-netbeans-modules-projectui</artifactId>
             <version>${netbeans.version}</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-modules-debugger-ui</artifactId>
+            <artifactId>org-netbeans-spi-debugger-ui</artifactId>
             <version>${netbeans.version}</version>
         </dependency>
         <dependency>
