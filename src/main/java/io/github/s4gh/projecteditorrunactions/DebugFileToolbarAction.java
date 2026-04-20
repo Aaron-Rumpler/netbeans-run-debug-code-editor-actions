@@ -14,7 +14,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @ActionRegistration(
     displayName = "#CTL_DebugFileToolbarAction",
-    lazy = true
+    lazy = false
 )
 @ActionReference(
     path = "Editors/Toolbars/Default",
@@ -27,7 +27,11 @@ public final class DebugFileToolbarAction extends AbstractFileCommandAction {
     private static final String ICON =
             "org/netbeans/modules/debugger/resources/debugProject.png";
 
-    public DebugFileToolbarAction(DataObject dobj) {
+    public DebugFileToolbarAction() {
+        this(null);
+    }
+
+    private DebugFileToolbarAction(DataObject dobj) {
         super(dobj, ActionProvider.COMMAND_DEBUG_SINGLE,
               Bundle.CTL_DebugFileToolbarAction(), ICON);
     }

@@ -14,7 +14,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @ActionRegistration(
     displayName = "#CTL_RunFileToolbarAction",
-    lazy = true
+    lazy = false
 )
 @ActionReference(
     path = "Editors/Toolbars/Default",
@@ -26,7 +26,11 @@ public final class RunFileToolbarAction extends AbstractFileCommandAction {
     private static final String ICON =
             "org/netbeans/modules/project/ui/resources/runProject.png";
 
-    public RunFileToolbarAction(DataObject dobj) {
+    public RunFileToolbarAction() {
+        this(null);
+    }
+
+    private RunFileToolbarAction(DataObject dobj) {
         super(dobj, ActionProvider.COMMAND_RUN_SINGLE,
               Bundle.CTL_RunFileToolbarAction(), ICON);
     }

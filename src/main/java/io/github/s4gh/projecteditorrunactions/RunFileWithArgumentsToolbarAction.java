@@ -24,7 +24,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @ActionRegistration(
     displayName = "#CTL_RunFileWithArgumentsToolbarAction",
-    lazy = true
+    lazy = false
 )
 @ActionReference(
     path = "Editors/Toolbars/Default",
@@ -36,7 +36,11 @@ public final class RunFileWithArgumentsToolbarAction extends AbstractFileCommand
     static final String DELEGATE_CATEGORY = "Build";
     static final String DELEGATE_ID = "com.tusharjoshi.runargs.RunFileAction";
 
-    public RunFileWithArgumentsToolbarAction(DataObject dobj) {
+    public RunFileWithArgumentsToolbarAction() {
+        this(null);
+    }
+
+    private RunFileWithArgumentsToolbarAction(DataObject dobj) {
         super(dobj, null, Bundle.CTL_RunFileWithArgumentsToolbarAction(),
               WithArgumentsDelegate.delegateIcon(DELEGATE_CATEGORY, DELEGATE_ID));
     }

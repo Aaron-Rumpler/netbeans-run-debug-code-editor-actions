@@ -22,9 +22,10 @@ import org.openide.util.lookup.Lookups;
 
 /**
  * Shared base for editor-toolbar actions that act on the file currently shown
- * in the editor. The current editor's {@link DataObject} is injected by
- * NetBeans when the lazy action is materialized for the
- * {@code Editors/Toolbars/Default} toolbar.
+ * in the editor. A fresh instance is bound to each editor's
+ * {@link DataObject} via {@link #createContextAwareInstance(Lookup)}, which
+ * NbEditorToolBar calls with the editor's lookup when rendering
+ * {@code Editors/Toolbars/Default}.
  *
  * <p>The default implementation delegates to the owning project's
  * {@link ActionProvider} using a command string (e.g.

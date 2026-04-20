@@ -24,7 +24,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @ActionRegistration(
     displayName = "#CTL_DebugFileWithArgumentsToolbarAction",
-    lazy = true
+    lazy = false
 )
 @ActionReference(
     path = "Editors/Toolbars/Default",
@@ -36,7 +36,11 @@ public final class DebugFileWithArgumentsToolbarAction extends AbstractFileComma
     static final String DELEGATE_CATEGORY = "Build";
     static final String DELEGATE_ID = "com.tusharjoshi.runargs.DebugFileAction";
 
-    public DebugFileWithArgumentsToolbarAction(DataObject dobj) {
+    public DebugFileWithArgumentsToolbarAction() {
+        this(null);
+    }
+
+    private DebugFileWithArgumentsToolbarAction(DataObject dobj) {
         super(dobj, null, Bundle.CTL_DebugFileWithArgumentsToolbarAction(),
               WithArgumentsDelegate.delegateIcon(DELEGATE_CATEGORY, DELEGATE_ID));
     }
