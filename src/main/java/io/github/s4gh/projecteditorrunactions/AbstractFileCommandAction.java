@@ -21,9 +21,10 @@ import org.openide.util.lookup.Lookups;
 
 /**
  * Shared base for editor-toolbar actions that delegate a single-file command
- * (run, debug, ...) to the project's {@link ActionProvider}. The current
- * editor's {@link DataObject} is injected by NetBeans when the lazy action is
- * materialized for the {@code Editors/Toolbars/Default} toolbar.
+ * (run, debug, ...) to the project's {@link ActionProvider}. A fresh instance
+ * is bound to each editor's {@link DataObject} via
+ * {@link #createContextAwareInstance(Lookup)}, which NbEditorToolBar calls
+ * with the editor's lookup when rendering {@code Editors/Toolbars/Default}.
  */
 abstract class AbstractFileCommandAction extends AbstractAction
         implements ContextAwareAction, Presenter.Toolbar {
