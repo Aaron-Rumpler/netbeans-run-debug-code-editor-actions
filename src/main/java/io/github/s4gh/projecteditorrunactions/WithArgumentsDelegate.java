@@ -1,11 +1,14 @@
 package io.github.s4gh.projecteditorrunactions;
 
 import javax.swing.Action;
+import javax.swing.AbstractButton;
 import javax.swing.Icon;
+import javax.swing.JComponent;
 
 import org.openide.awt.Actions;
 import org.openide.loaders.DataObject;
 import org.openide.util.ContextAwareAction;
+import org.openide.util.actions.Presenter;
 import org.openide.util.lookup.Lookups;
 
 /**
@@ -24,7 +27,16 @@ final class WithArgumentsDelegate {
             return null;
         }
         Object icon = delegate.getValue(Action.SMALL_ICON);
-        return icon instanceof Icon i ? i : null;
+        if (icon instanceof Icon i) {
+            return i;
+        }
+        if (delegate instanceof Presenter.Toolbar toolbar) {
+            JComponent presenter = toolbar.getToolbarPresenter();
+            if (presenter instanceof AbstractButton button) {
+                return button.getIcon();
+            }
+        }
+        return null;
     }
 
     static Action contextDelegate(String category, String id, DataObject dobj) {
